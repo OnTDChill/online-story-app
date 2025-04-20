@@ -1,27 +1,19 @@
 const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../config/env');
 
-const verifyToken = (req, res, next) => {
-    const token = req.header("Authorization");
+const authMiddleware = (req, res, next) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+  if (!token) {
+    return res.status(401).json({ message: 'No token, authorization denied' });
+  }
 
-    if (!token) {
-        return res.status(401).json({ message: "Bạn chưa đăng nhập!" });
-    }
-
-    try {
-        const decoded = jwt.verify(token.replace("Bearer ", ""), process.env.JWT_SECRET);
-        req.user = decoded;
-        next();
-    } catch (error) {
-        res.status(403).json({ message: "Token không hợp lệ!", error: error.message });
-    }
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res.status(401).json({ message: 'Token is not valid' });
+  }
 };
 
-const verifyAdmin = (req, res, next) => {
-    if (req.user && req.user.role === 'Admin') {
-        next();
-    } else {
-        res.status(401).json({ success: false, message: 'Unauthorized: Admin only' });
-    }
-}
-
-module.exports = { verifyToken, verifyAdmin };
+module.exports = authMiddleware;

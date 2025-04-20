@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
 const readingProgressSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  storyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Story', required: true },
-  chapterId: { type: Number, default: 1 },
-}, { timestamps: true });
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  story: { type: mongoose.Schema.Types.ObjectId, ref: 'Story', required: true },
+  lastChapter: { type: Number, required: true },
+  updatedAt: { type: Date, default: Date.now }
+});
 
 module.exports = mongoose.model('ReadingProgress', readingProgressSchema);

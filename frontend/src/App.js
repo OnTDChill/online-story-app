@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Typography } from '@mui/material';
 import axios from 'axios';
 import Header from './components/Header';
 import Login from './components/Login';
@@ -11,6 +10,8 @@ import CreateStory from './components/CreateStory';
 import StoryDetail from './components/StoryDetail';
 import AuthorDashboard from './components/AuthorDashboard';
 import Profile from './components/Profile';
+import Genres from './components/Genres';
+import AdminDashboard from './components/AdminDashboard';
 
 const theme = createTheme({
   palette: {
@@ -38,6 +39,12 @@ function App() {
     }
   }, []);
 
+  const StoryListWrapper = () => {
+    const location = useLocation();
+    const { mode, showAdvancedSearch } = location.state || {};
+    return <StoryList user={user} initialMode={mode} initialShowAdvancedSearch={showAdvancedSearch} />;
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -45,7 +52,7 @@ function App() {
         <Routes>
           <Route path="/login" element={!user ? <Login setUser={setUser} /> : <Navigate to="/" />} />
           <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
-          <Route path="/" element={<StoryList user={user} />} />
+          <Route path="/" element={<StoryListWrapper />} />
           <Route
             path="/create-story"
             element={
@@ -54,11 +61,10 @@ function App() {
           />
           <Route path="/story/:id" element={<StoryDetail user={user} />} />
           <Route path="/author" element={<AuthorDashboard />} />
-          <Route path="/profile" element={<Profile user={user} />} />
-          <Route path="/manage-stories" element={<Typography sx={{ mt: 12, ml: 4 }}>Quản Lý Truyện (chưa triển khai)</Typography>} />
-          <Route path="/top-up" element={<Typography sx={{ mt: 12, ml: 4 }}>Nạp Xèng (chưa triển khai)</Typography>} />
-          <Route path="/messages" element={<Typography sx={{ mt: 12, ml: 4 }}>Tin Nhắn (chưa triển khai)</Typography>} />
-          <Route path="/genres" element={<Typography sx={{ mt: 12, ml: 4 }}>Danh sách thể loại (chưa triển khai)</Typography>} />
+          <Route path="/genres" element={<Genres />} />
+          <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate to="/login" />} />
+          <Route path="/stories" element={<StoryListWrapper />} />
+          <Route path="/admin" element={user && user.role === 'Admin' ? <AdminDashboard /> : <Navigate to="/login" />} />
         </Routes>
       </Router>
     </ThemeProvider>

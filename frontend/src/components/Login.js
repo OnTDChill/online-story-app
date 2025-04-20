@@ -15,13 +15,18 @@ const Login = ({ setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    console.log('Login attempt with:', formData);
 
     try {
+      console.log('Sending request to:', 'http://localhost:5000/api/user/login');
       const response = await axios.post('http://localhost:5000/api/user/login', formData);
+      console.log('Login response:', response.data);
       localStorage.setItem('token', response.data.token);
       setUser(response.data.user);
       navigate('/');
     } catch (err) {
+      console.error('Login error:', err);
+      console.error('Error response:', err.response?.data);
       setError(err.response?.data?.message || 'Lỗi khi đăng nhập!');
     }
   };

@@ -1,13 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { createGenre, getGenres, getGenreById, updateGenre, deleteGenre, getStoriesByGenre } = require('../controllers/genreController');
-const { verifyToken, verifyAdmin } = require('../middleware/authMiddleware');
+const { getGenres, createGenre } = require('../controllers/genreController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-router.post('/', verifyToken, verifyAdmin, createGenre);
 router.get('/', getGenres);
-router.get('/:id', getGenreById);
-router.put('/:id', verifyToken, verifyAdmin, updateGenre);
-router.delete('/:id', verifyToken, verifyAdmin, deleteGenre);
-router.get('/:genreName/stories', getStoriesByGenre);
+router.post('/', authMiddleware, createGenre);
 
 module.exports = router;

@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const connectDB = require('./src/config/db');
-const { port, nodeEnv } = require('./src/config/env');
+const { port, nodeEnv, JWT_SECRET } = require('./src/config/env');
 const path = require('path');
 const storyThumbnailUpload = require('./src/middleware/storyThumbnailUpload');
 const errorHandler = require('./src/middleware/errorHandler');
@@ -13,6 +14,7 @@ const genreRoutes = require('./src/routes/genreRoutes');
 const readingProgressRoutes = require('./src/routes/readingProgressRoutes');
 const ReadingProgressManager = require('./src/utils/ReadingProgressManager');
 const ReadingProgress = require('./src/models/ReadingProgress');
+const adminRoutes = require('./src/routes/adminRoutes');
 
 const app = express();
 app.use(cors());
@@ -40,6 +42,7 @@ app.use('/api/chapter-images', chapterImageRoutes);
 app.use('/api/stories', storyRoutes);
 app.use('/api/genres', genreRoutes);
 app.use('/api/progress', readingProgressRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Phục vụ tệp tĩnh
 app.use('/uploads', express.static(path.join(__dirname, 'Uploads')));
@@ -47,6 +50,25 @@ app.use('/uploads', express.static(path.join(__dirname, 'Uploads')));
 // Route mẫu
 app.get('/api', (req, res) => {
   res.json({ message: 'Hello from back-end!' });
+});
+
+// Test route for JWT
+app.get('/api/test-jwt', (req, res) => {
+  try {
+    const payload = { test: 'data' };
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+    res.json({
+      message: 'JWT test successful',
+      token: token.substring(0, 20) + '...',
+      env: {
+        jwtSecretExists: !!JWT_SECRET,
+        jwtSecretFirstChars: JWT_SECRET ? JWT_SECRET.substring(0, 3) + '...' : 'N/A'
+      }
+    });
+  } catch (error) {
+    console.error('JWT Test Error:', error);
+    res.status(500).json({ message: 'JWT test failed', error: error.message });
+  }
 });
 
 // Xử lý lỗi

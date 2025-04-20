@@ -1,9 +1,9 @@
 const express = require('express');
+const { updateProgress, getProgress } = require('../controllers/readingProgressController');
+const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
-const { getProgress, updateProgress } = require('../controllers/readingProgressController');
-const { verifyToken } = require('../middleware/authMiddleware');
 
-router.get('/:userId/:storyId', verifyToken, getProgress);
-router.post('/', verifyToken, updateProgress);
+router.post('/', authMiddleware, updateProgress);
+router.get('/:userId/:storyId', authMiddleware, getProgress);
 
 module.exports = router;

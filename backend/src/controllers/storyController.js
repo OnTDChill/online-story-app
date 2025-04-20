@@ -3,86 +3,62 @@ const Chapter = require('../models/Chapter');
 const StoryFacade = require('../utils/StoryFacade');
 
 const createStory = async (req, res) => {
+  const { title, description, author, genre, number_of_chapters, status, type } = req.body;
+  const thumbnail = req.file ? req.file.filename : null;
   try {
-    const newStory = await StoryFacade.createStory(req.body, req.file);
-    res.status(201).json({ message: 'Truyện đã được tạo thành công!', story: newStory });
+    const facade = new StoryFacade();
+    const story = await facade.createStory({ title, description, author, genre, number_of_chapters, status, type, thumbnail });
+    res.json({ message: 'Story created successfully', story });
   } catch (error) {
-    res.status(400).json({ message: 'Lỗi khi tạo truyện!', error: error.message });
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
 const getStories = async (req, res) => {
+  const { search, genre, author, status, sort, page = 1, limit = 10, mode } = req.query;
+  const query = {};
+  if (search) query.title = { $regex: search, $options: 'i' };
+  if (genre) query.genre = genre;
+  if (author) query.author = { $regex: author, $options: 'i' };
+  if (status) query.status = status;
+  if (mode === 'original') query.type = 'normal';
+  if (mode === 'translated') query.type = 'vip';
+
+  const sortOptions = {};
+  if (sort === 'latest') sortOptions.createdAt = -1;
+  if (sort === 'popular' || mode === 'ranking') sortOptions.views = -1;
+
   try {
-    const stories = await Story.find();
-    res.json(stories);
+    const stories = await Story.find(query)
+      .sort(sortOptions)
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+    const total = await Story.countDocuments(query);
+    res.json({ stories, total });
   } catch (error) {
-    res.status(500).json({ message: 'Lỗi server!', error: error.message });
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
 const getStoryById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const story = await Story.findById(id);
-    if (!story) return res.status(404).json({ message: 'Truyện không tồn tại!' });
+    const story = await Story.findById(req.params.id);
+    if (!story) {
+      return res.status(404).json({ message: 'Story not found' });
+    }
     res.json(story);
   } catch (error) {
-    res.status(500).json({ message: 'Lỗi server!', error: error.message });
-  }
-};
-
-const updateStory = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { title, description, author, genre, number_of_chapters, status } = req.body;
-
-    const story = await Story.findById(id);
-    if (!story) return res.status(404).json({ message: 'Truyện không tồn tại!' });
-
-    story.title = title || story.title;
-    story.description = description || story.description;
-    story.author = author || story.author;
-    story.genre = genre || story.genre;
-    story.number_of_chapters = number_of_chapters || story.number_of_chapters;
-    story.status = status || story.status;
-
-    await story.save();
-    res.json({ message: 'Cập nhật truyện thành công!', story });
-  } catch (error) {
-    res.status(500).json({ message: 'Lỗi server!', error: error.message });
-  }
-};
-
-const deleteStory = async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(400).json({ message: 'Invalid story ID!' });
-    }
-
-    const story = await Story.findById(id);
-    if (!story) {
-      return res.status(404).json({ message: 'Truyện không tồn tại!' });
-    }
-
-    await Story.findByIdAndDelete(id);
-    res.json({ message: 'Xóa truyện thành công!' });
-  } catch (error) {
-    res.status(500).json({ message: 'Lỗi server!', error: error.message });
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
 const getChaptersByStory = async (req, res) => {
   try {
-    const { storyId } = req.params;
-    const story = await Story.findById(storyId);
-    if (!story) return res.status(404).json({ message: 'Truyện không tồn tại!' });
-    
-    const response = await Chapter.find({ story_id: storyId }).populate('story_id', 'title');    
-    res.json(response);
+    const chapters = await Chapter.find({ story: req.params.id });
+    res.json(chapters);
   } catch (error) {
-    res.status(500).json({ message: 'Lỗi server!', error: error.message });
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-module.exports = { createStory, getStories, getStoryById, updateStory, deleteStory, getChaptersByStory };
+module.exports = { createStory, getStories, getStoryById, getChaptersByStory };

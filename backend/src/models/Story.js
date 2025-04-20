@@ -7,21 +7,18 @@ const storySchema = new mongoose.Schema({
   author: { type: String, required: true },
   genre: { type: String, required: true },
   thumbnail: { type: String },
+  views: { type: Number, default: 0 },
+  status: { type: String, default: 'Hành động' },
+  type: { type: String, default: 'normal' },
   number_of_chapters: { type: Number, required: true },
-  latest_chapter: { type: Number, default: 0 },
-  status: { type: String, enum: ['ongoing', 'completed'], default: 'ongoing' },
-  isVip: { type: Boolean, default: false }
+  bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 
 storySchema.pre('findOneAndDelete', async function (next) {
-  try {
-    const story = await this.model.findOne(this.getQuery());
-    if (!story) return next();
-    await Chapter.deleteMany({ story_id: story._id });
-    next();
-  } catch (error) {
-    next(error);
-  }
+  await Chapter.deleteMany({ story: this._conditions._id });
+  next();
 });
+
+storySchema.index({ genre: 1, author: 1 });
 
 module.exports = mongoose.model('Story', storySchema);
