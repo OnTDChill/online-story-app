@@ -3,14 +3,65 @@ const Chapter = require('../models/Chapter');
 const StoryFacade = require('../utils/StoryFacade');
 
 const createStory = async (req, res) => {
-  const { title, description, author, genre, number_of_chapters, status, type } = req.body;
-  const thumbnail = req.file ? req.file.filename : null;
   try {
-    const facade = new StoryFacade();
-    const story = await facade.createStory({ title, description, author, genre, number_of_chapters, status, type, thumbnail });
-    res.json({ message: 'Story created successfully', story });
+    // Log the entire request for debugging
+    console.log('Request received for story creation');
+    console.log('Request body type:', typeof req.body);
+    console.log('Request body:', req.body);
+    console.log('Request file:', req.file);
+    console.log('Request headers:', req.headers);
+
+    // Check if we have a body at all
+    if (!req.body) {
+      console.error('No request body found');
+      return res.status(400).json({ message: 'Request body is missing' });
+    }
+
+    // Create a new story with default values
+    const newStory = {
+      title: req.body.title || '',
+      description: req.body.description || '',
+      author: req.body.author || '',
+      genre: req.body.genre || '',
+      number_of_chapters: req.body.number_of_chapters ? parseInt(req.body.number_of_chapters, 10) : 0,
+      status: req.body.status || 'Hành động',
+      type: req.body.type || 'normal',
+      thumbnail: req.file ? req.file.filename : null,
+      isVip: req.body.type === 'vip'
+    };
+
+    console.log('Story object to be created:', newStory);
+
+    // Validate required fields
+    const missingFields = [];
+    if (!newStory.title) missingFields.push('title');
+    if (!newStory.author) missingFields.push('author');
+    if (!newStory.genre) missingFields.push('genre');
+    if (!newStory.number_of_chapters) missingFields.push('number_of_chapters');
+
+    if (missingFields.length > 0) {
+      console.error('Missing required fields:', missingFields);
+      return res.status(400).json({
+        message: `Missing required fields: ${missingFields.join(', ')}`,
+        received: newStory
+      });
+    }
+
+    // Create and save the story
+    const story = new Story(newStory);
+    const savedStory = await story.save();
+    console.log('Story saved successfully:', savedStory._id);
+
+    res.status(201).json({
+      message: 'Story created successfully',
+      story: savedStory.toObject()
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error creating story:', error);
+    res.status(500).json({
+      message: error.message || 'Server error',
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 };
 

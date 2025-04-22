@@ -66,4 +66,4 @@ class StoryFacade {
   }
 }
 
-module.exports = new StoryFacade();
+module.exports = StoryFacade;

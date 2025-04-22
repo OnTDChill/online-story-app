@@ -1,23 +1,50 @@
-import React, { useState } from 'react';
-import { TextField, Button, MenuItem, Box, Typography } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { TextField, Button, MenuItem, Box, Typography, CircularProgress, Snackbar, Alert, FormControl, InputLabel, Select } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const CreateStory = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     author: '',
     genre: '',
     number_of_chapters: '',
-    status: 'ongoing',
+    status: 'Hành động',
     type: 'normal'
   });
   const [thumbnail, setThumbnail] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [genres, setGenres] = useState([]);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
+
+  useEffect(() => {
+    // Fetch genres when component mounts
+    const fetchGenres = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/genres');
+        setGenres(response.data);
+      } catch (err) {
+        console.error('Failed to load genres', err);
+      }
+    };
+
+    fetchGenres();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
   };
 
   const handleFileChange = (e) => {
@@ -28,52 +55,117 @@ const CreateStory = () => {
     e.preventDefault();
     setError('');
     setSuccess('');
-
-    const data = new FormData();
-    Object.keys(formData).forEach((key) => data.append(key, formData[key]));
-    if (thumbnail) data.append('thumbnail', thumbnail);
+    setLoading(true);
 
     try {
+      // Create a new FormData object
+      const data = new FormData();
+
+      // Add each field individually with console logs
+      console.log('Adding title:', formData.title);
+      data.append('title', formData.title);
+
+      console.log('Adding description:', formData.description);
+      data.append('description', formData.description);
+
+      console.log('Adding author:', formData.author);
+      data.append('author', formData.author);
+
+      console.log('Adding genre:', formData.genre);
+      data.append('genre', formData.genre);
+
+      console.log('Adding number_of_chapters:', formData.number_of_chapters);
+      data.append('number_of_chapters', formData.number_of_chapters);
+
+      console.log('Adding status:', formData.status);
+      data.append('status', formData.status);
+
+      console.log('Adding type:', formData.type);
+      data.append('type', formData.type);
+
+      // Add thumbnail if it exists
+      if (thumbnail) {
+        console.log('Adding thumbnail:', thumbnail.name);
+        data.append('thumbnail', thumbnail);
+      }
+
+      // Log the FormData (note: FormData can't be directly logged)
+      console.log('FormData created with fields:',
+        Array.from(data.entries()).map(entry => `${entry[0]}: ${entry[1]}`))
+
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/stories', data, {
+      console.log('Using token:', token ? 'Token exists' : 'No token');
+
+      // Make the API request
+      console.log('Sending request to API endpoint: http://localhost:5001/api/create-story');
+      const response = await axios.post('http://localhost:5001/api/create-story', data, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
+          // Don't set Content-Type here, let axios set it with the boundary
         }
       });
+
+      console.log('API response:', response.data);
       setSuccess(response.data.message);
-      setFormData({
-        title: '',
-        description: '',
-        author: '',
-        genre: '',
-        number_of_chapters: '',
-        status: 'ongoing',
-        type: 'normal'
+      setSnackbar({
+        open: true,
+        message: 'Story created successfully!',
+        severity: 'success'
       });
-      setThumbnail(null);
+
+      // Redirect to stories management after a short delay
+      setTimeout(() => {
+        navigate('/admin');
+      }, 2000);
+
     } catch (err) {
-      setError(err.response?.data?.message || 'Lỗi khi tạo truyện!');
+      console.error('Error creating story:', err);
+      console.error('Error details:', err.response?.data || 'No response data');
+      console.error('Error status:', err.response?.status || 'No status code');
+      console.error('Error message:', err.message || 'No error message');
+
+      // Set a more detailed error message
+      const errorMessage = err.response?.data?.message || err.message || 'Error creating story!';
+      setError(errorMessage);
+      setSnackbar({
+        open: true,
+        message: errorMessage,
+        severity: 'error'
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Box sx={{ maxWidth: 600, mx: 'auto', mt: 4, p: 2 }}>
-      <Typography variant="h4" gutterBottom>Tạo Truyện Mới</Typography>
-      {error && <Typography color="error">{error}</Typography>}
-      {success && <Typography color="success.main">{success}</Typography>}
+    <Box sx={{ maxWidth: 600, mx: 'auto', mt: 8, p: 3, bgcolor: '#1E1E1E', color: '#FFFFFF', borderRadius: 2 }}>
+      <Typography variant="h4" gutterBottom sx={{ color: '#0288D1' }}>Create New Story</Typography>
+      {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
+      {success && <Typography sx={{ color: '#4CAF50', mb: 2 }}>{success}</Typography>}
+
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Tiêu đề"
+          label="Title"
           name="title"
           value={formData.title}
           onChange={handleChange}
           fullWidth
           margin="normal"
           required
+          sx={{
+            mb: 2,
+            '& .MuiInputBase-input': { color: '#FFFFFF' },
+            '& .MuiInputLabel-root': { color: '#B0BEC5' },
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': { borderColor: '#424242' },
+              '&:hover fieldset': { borderColor: '#0288D1' },
+            },
+            backgroundColor: '#424242'
+          }}
         />
+
         <TextField
-          label="Mô tả"
+          label="Description"
           name="description"
           value={formData.description}
           onChange={handleChange}
@@ -81,27 +173,58 @@ const CreateStory = () => {
           margin="normal"
           multiline
           rows={4}
+          sx={{
+            mb: 2,
+            '& .MuiInputBase-input': { color: '#FFFFFF' },
+            '& .MuiInputLabel-root': { color: '#B0BEC5' },
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': { borderColor: '#424242' },
+              '&:hover fieldset': { borderColor: '#0288D1' },
+            },
+            backgroundColor: '#424242'
+          }}
         />
+
         <TextField
-          label="Tác giả"
+          label="Author"
           name="author"
           value={formData.author}
           onChange={handleChange}
           fullWidth
           margin="normal"
           required
+          sx={{
+            mb: 2,
+            '& .MuiInputBase-input': { color: '#FFFFFF' },
+            '& .MuiInputLabel-root': { color: '#B0BEC5' },
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': { borderColor: '#424242' },
+              '&:hover fieldset': { borderColor: '#0288D1' },
+            },
+            backgroundColor: '#424242'
+          }}
         />
+
+        <FormControl fullWidth margin="normal" sx={{ mb: 2, backgroundColor: '#424242' }}>
+          <InputLabel sx={{ color: '#B0BEC5' }}>Genre</InputLabel>
+          <Select
+            name="genre"
+            value={formData.genre}
+            label="Genre"
+            onChange={handleChange}
+            required
+            sx={{ color: '#FFFFFF' }}
+          >
+            {genres.map((genre) => (
+              <MenuItem key={genre._id} value={genre.name}>
+                {genre.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
         <TextField
-          label="Thể loại"
-          name="genre"
-          value={formData.genre}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          required
-        />
-        <TextField
-          label="Số chương"
+          label="Number of Chapters"
           name="number_of_chapters"
           type="number"
           value={formData.number_of_chapters}
@@ -109,38 +232,53 @@ const CreateStory = () => {
           fullWidth
           margin="normal"
           required
+          sx={{
+            mb: 2,
+            '& .MuiInputBase-input': { color: '#FFFFFF' },
+            '& .MuiInputLabel-root': { color: '#B0BEC5' },
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': { borderColor: '#424242' },
+              '&:hover fieldset': { borderColor: '#0288D1' },
+            },
+            backgroundColor: '#424242'
+          }}
         />
-        <TextField
-          select
-          label="Trạng thái"
-          name="status"
-          value={formData.status}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        >
-          <MenuItem value="ongoing">Đang tiến hành</MenuItem>
-          <MenuItem value="completed">Hoàn thành</MenuItem>
-        </TextField>
-        <TextField
-          select
-          label="Loại truyện"
-          name="type"
-          value={formData.type}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        >
-          <MenuItem value="normal">Thông thường</MenuItem>
-          <MenuItem value="vip">VIP</MenuItem>
-        </TextField>
+
+        <FormControl fullWidth margin="normal" sx={{ mb: 2, backgroundColor: '#424242' }}>
+          <InputLabel sx={{ color: '#B0BEC5' }}>Status</InputLabel>
+          <Select
+            name="status"
+            value={formData.status}
+            label="Status"
+            onChange={handleChange}
+            sx={{ color: '#FFFFFF' }}
+          >
+            <MenuItem value="Hành động">Hành động</MenuItem>
+            <MenuItem value="Hoàn thành">Hoàn thành</MenuItem>
+          </Select>
+        </FormControl>
+
+        <FormControl fullWidth margin="normal" sx={{ mb: 2, backgroundColor: '#424242' }}>
+          <InputLabel sx={{ color: '#B0BEC5' }}>Story Type</InputLabel>
+          <Select
+            name="type"
+            value={formData.type}
+            label="Story Type"
+            onChange={handleChange}
+            sx={{ color: '#FFFFFF' }}
+          >
+            <MenuItem value="normal">Normal</MenuItem>
+            <MenuItem value="vip">VIP</MenuItem>
+          </Select>
+        </FormControl>
+
         <Button
           variant="contained"
           component="label"
           fullWidth
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, mb: 2, backgroundColor: '#424242', color: '#FFFFFF' }}
         >
-          Chọn ảnh bìa
+          Choose Cover Image
           <input
             type="file"
             hidden
@@ -148,17 +286,39 @@ const CreateStory = () => {
             onChange={handleFileChange}
           />
         </Button>
-        {thumbnail && <Typography sx={{ mt: 1 }}>{thumbnail.name}</Typography>}
+
+        {thumbnail && (
+          <Typography sx={{ mt: 1, mb: 2, color: '#0288D1' }}>
+            Selected file: {thumbnail.name}
+          </Typography>
+        )}
+
         <Button
           type="submit"
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ mt: 2 }}
+          disabled={loading}
+          sx={{ mt: 2, backgroundColor: '#0288D1' }}
         >
-          Tạo Truyện
+          {loading ? <CircularProgress size={24} /> : 'Create Story'}
         </Button>
       </form>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

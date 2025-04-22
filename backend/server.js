@@ -17,8 +17,16 @@ const ReadingProgress = require('./src/models/ReadingProgress');
 const adminRoutes = require('./src/routes/adminRoutes');
 
 const app = express();
-app.use(cors());
+
+// Configure CORS
+app.use(cors({
+  origin: 'http://localhost:3001', // Allow your frontend origin
+  credentials: true
+}));
+
+// Body parsers
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
 
 // Kết nối MongoDB
 connectDB().then(async () => {
@@ -50,6 +58,68 @@ app.use('/uploads', express.static(path.join(__dirname, 'Uploads')));
 // Route mẫu
 app.get('/api', (req, res) => {
   res.json({ message: 'Hello from back-end!' });
+});
+
+// Simple test endpoint
+app.get('/api/test-endpoint', (req, res) => {
+  console.log('Test endpoint accessed');
+  res.json({ message: 'Test endpoint is working!' });
+});
+
+// Simple post test
+app.post('/api/test-post', (req, res) => {
+  console.log('Test post endpoint accessed');
+  console.log('Body:', req.body);
+  res.json({ message: 'Test post endpoint is working!', received: req.body });
+});
+
+// Working story creation route - no auth required for testing
+app.post('/api/create-story', storyThumbnailUpload.single('thumbnail'), async (req, res) => {
+  console.log('Story creation request received:');
+  console.log('Body:', req.body);
+  console.log('File:', req.file);
+
+  try {
+    // Extract data from form
+    const { title, description, author, genre, number_of_chapters, status, type } = req.body;
+
+    // Validate required fields
+    if (!title || !author || !genre || !number_of_chapters) {
+      return res.status(400).json({
+        message: 'Missing required fields',
+        received: { title, author, genre, number_of_chapters }
+      });
+    }
+
+    // Create new story
+    const Story = require('./src/models/Story');
+    const story = new Story({
+      title,
+      description: description || '',
+      author,
+      genre,
+      thumbnail: req.file ? req.file.filename : null,
+      number_of_chapters: parseInt(number_of_chapters, 10),
+      status: status || 'Hành động',
+      type: type || 'normal',
+      isVip: type === 'vip'
+    });
+
+    // Save to database
+    const savedStory = await story.save();
+    console.log('Story saved successfully:', savedStory._id);
+
+    // Return success response
+    res.status(201).json({
+      message: 'Story created successfully',
+      story: savedStory
+    });
+  } catch (error) {
+    console.error('Error creating story:', error);
+    res.status(500).json({
+      message: error.message || 'Server error'
+    });
+  }
 });
 
 // Test route for JWT

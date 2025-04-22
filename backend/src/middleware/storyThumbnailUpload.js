@@ -1,12 +1,23 @@
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
+
+// Ensure upload directory exists
+const uploadDir = path.join(__dirname, '..', '..', 'Uploads', 'temp');
+if (!fs.existsSync(uploadDir)) {
+  console.log(`Creating upload directory: ${uploadDir}`);
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'Uploads/temp');
+    console.log(`Saving file to: ${uploadDir}`);
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    const filename = `${Date.now()}-${file.originalname.replace(/\s+/g, '-')}`;
+    console.log(`Generated filename: ${filename}`);
+    cb(null, filename);
   }
 });
 

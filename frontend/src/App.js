@@ -12,6 +12,7 @@ import AuthorDashboard from './components/AuthorDashboard';
 import Profile from './components/Profile';
 import Genres from './components/Genres';
 import AdminDashboard from './components/AdminDashboard';
+import TestForm from './components/TestForm';
 
 const theme = createTheme({
   palette: {
@@ -65,6 +66,7 @@ function App() {
           <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate to="/login" />} />
           <Route path="/stories" element={<StoryListWrapper />} />
           <Route path="/admin" element={user && user.role === 'Admin' ? <AdminDashboard /> : <Navigate to="/login" />} />
+          <Route path="/test-form" element={<TestForm />} />
         </Routes>
       </Router>
     </ThemeProvider>
