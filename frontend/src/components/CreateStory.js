@@ -97,8 +97,8 @@ const CreateStory = () => {
       console.log('Using token:', token ? 'Token exists' : 'No token');
 
       // Make the API request
-      console.log('Sending request to API endpoint: http://localhost:5001/api/create-story');
-      const response = await axios.post('http://localhost:5001/api/create-story', data, {
+      console.log('Sending request to API endpoint: http://localhost:5000/api/create-story');
+      const response = await axios.post('http://localhost:5000/api/create-story', data, {
         headers: {
           Authorization: `Bearer ${token}`,
           // Don't set Content-Type here, let axios set it with the boundary

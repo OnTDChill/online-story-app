@@ -34,12 +34,37 @@ const Register = () => {
     if (!validateForm()) return;
 
     try {
+      console.log('Sending registration request with:', formData);
       const response = await axios.post('http://localhost:5000/api/user/register', formData);
-      setSuccess(response.data.message);
+      console.log('Registration response:', response.data);
+      setSuccess(response.data.message || 'Đăng ký thành công!');
       setFormData({ username: '', email: '', password: '' });
       setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
-      setErrors({ api: err.response?.data?.message || 'Lỗi khi đăng ký!' });
+      console.error('Registration error:', err);
+      console.error('Error response:', err.response?.data);
+
+      // More detailed error handling
+      if (err.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        if (err.response.data?.errors) {
+          // Handle validation errors
+          const validationErrors = {};
+          err.response.data.errors.forEach(error => {
+            validationErrors[error.param] = error.msg;
+          });
+          setErrors({ ...validationErrors, api: 'Vui lòng kiểm tra lại thông tin đăng ký.' });
+        } else {
+          setErrors({ api: err.response.data?.message || `Lỗi máy chủ: ${err.response.status}` });
+        }
+      } else if (err.request) {
+        // The request was made but no response was received
+        setErrors({ api: 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng của bạn.' });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setErrors({ api: `Lỗi: ${err.message}` });
+      }
     }
   };
 

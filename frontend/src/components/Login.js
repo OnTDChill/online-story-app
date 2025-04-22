@@ -27,7 +27,19 @@ const Login = ({ setUser }) => {
     } catch (err) {
       console.error('Login error:', err);
       console.error('Error response:', err.response?.data);
-      setError(err.response?.data?.message || 'Lỗi khi đăng nhập!');
+
+      // More detailed error handling
+      if (err.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        setError(err.response.data?.message || `Lỗi máy chủ: ${err.response.status}`);
+      } else if (err.request) {
+        // The request was made but no response was received
+        setError('Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng của bạn.');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setError(`Lỗi: ${err.message}`);
+      }
     }
   };
 
