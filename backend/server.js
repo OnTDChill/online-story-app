@@ -15,6 +15,7 @@ const readingProgressRoutes = require('./src/routes/readingProgressRoutes');
 const ReadingProgressManager = require('./src/utils/ReadingProgressManager');
 const ReadingProgress = require('./src/models/ReadingProgress');
 const adminRoutes = require('./src/routes/adminRoutes');
+const narutoChaptersRoutes = require('./src/routes/narutochapters');
 
 const app = express();
 
@@ -43,6 +44,24 @@ app.post('/api/upload-story-image', storyThumbnailUpload.single('image'), (req, 
   res.json({ message: 'File uploaded', filePath: `/uploads/stories/${req.file.filename}` });
 });
 
+// API endpoint đặc biệt cho truyện Naruto
+app.get('/api/all-chapters', async (req, res) => {
+  try {
+    console.log('Getting all chapters directly from server.js');
+
+    // Lấy tất cả các chương trong cơ sở dữ liệu
+    const Chapter = require('./src/models/Chapter');
+    const allChapters = await Chapter.find({}).sort({ chapter_number: 1 });
+    console.log('All chapters in database:', allChapters.length);
+
+    // Trả về kết quả
+    res.json(allChapters);
+  } catch (error) {
+    console.error('Error getting all chapters:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Sử dụng các routes
 app.use('/api/user', authRoutes);
 app.use('/api/chapters', chapterRoutes);
@@ -59,6 +78,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'Uploads')));
 app.get('/api', (req, res) => {
   res.json({ message: 'Hello from back-end!' });
 });
+
+
 
 // Simple test endpoint
 app.get('/api/test-endpoint', (req, res) => {
@@ -98,7 +119,7 @@ app.post('/api/create-story', storyThumbnailUpload.single('thumbnail'), async (r
       description: description || '',
       author,
       genre,
-      thumbnail: req.file ? req.file.filename : null,
+      thumbnail: req.file ? `http://localhost:${port}/uploads/temp/${req.file.filename}` : null,
       number_of_chapters: parseInt(number_of_chapters, 10),
       status: status || 'Hành động',
       type: type || 'normal',

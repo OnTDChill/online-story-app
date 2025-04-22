@@ -1,15 +1,15 @@
 // frontend/src/components/Header.js
 import React, { useState } from 'react';
-import { 
-  AppBar, 
-  Toolbar, 
-  Typography, 
-  Button, 
-  Box, 
-  Menu, 
-  MenuItem, 
-  IconButton, 
-  Avatar 
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  Menu,
+  MenuItem,
+  IconButton,
+  Avatar
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -37,7 +37,7 @@ const Header = ({ user, setUser }) => {
   };
 
   const handleListOption = (mode, showAdvancedSearch = false) => {
-    navigate('/', { state: { mode, showAdvancedSearch } });
+    navigate('/stories', { state: { mode, showAdvancedSearch } });
     handleListClose();
   };
 
@@ -71,6 +71,10 @@ const Header = ({ user, setUser }) => {
           <MenuItem onClick={() => handleListOption('ranking')}>Bảng Xếp Hạng</MenuItem>
           <MenuItem onClick={() => handleListOption('original')}>Truyện Sáng Tác</MenuItem>
           <MenuItem onClick={() => handleListOption('translated')}>Truyện Dịch/Edit</MenuItem>
+          <MenuItem onClick={() => {
+            navigate('/grid');
+            handleListClose();
+          }}>Bảng Xếp Hạng Mới</MenuItem>
         </Menu>
         <Button color="inherit" component={Link} to="/genres" sx={{ color: '#FFFFFF' }}>
           Thể Loại

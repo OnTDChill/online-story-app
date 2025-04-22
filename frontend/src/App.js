@@ -13,6 +13,7 @@ import Profile from './components/Profile';
 import Genres from './components/Genres';
 import AdminDashboard from './components/AdminDashboard';
 import TestForm from './components/TestForm';
+import HomePage from './pages/HomePage';
 
 const theme = createTheme({
   palette: {
@@ -43,6 +44,7 @@ function App() {
   const StoryListWrapper = () => {
     const location = useLocation();
     const { mode, showAdvancedSearch } = location.state || {};
+    console.log('StoryListWrapper state:', { mode, showAdvancedSearch });
     return <StoryList user={user} initialMode={mode} initialShowAdvancedSearch={showAdvancedSearch} />;
   };
 
@@ -53,7 +55,7 @@ function App() {
         <Routes>
           <Route path="/login" element={!user ? <Login setUser={setUser} /> : <Navigate to="/" />} />
           <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
-          <Route path="/" element={<StoryListWrapper />} />
+          <Route path="/" element={<HomePage />} />
           <Route
             path="/create-story"
             element={
@@ -67,6 +69,7 @@ function App() {
           <Route path="/stories" element={<StoryListWrapper />} />
           <Route path="/admin" element={user && user.role === 'Admin' ? <AdminDashboard /> : <Navigate to="/login" />} />
           <Route path="/test-form" element={<TestForm />} />
+          <Route path="/grid" element={<HomePage />} />
         </Routes>
       </Router>
     </ThemeProvider>

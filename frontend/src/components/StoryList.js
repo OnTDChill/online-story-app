@@ -24,6 +24,17 @@ const StoryList = ({ user, initialMode, initialShowAdvancedSearch }) => {
   const navigate = useNavigate();
   const limit = 10;
 
+  // Update mode when location state changes
+  useEffect(() => {
+    const { mode: locationMode, showAdvancedSearch: locationShowAdvancedSearch } = location.state || {};
+    if (locationMode) {
+      setMode(locationMode);
+    }
+    if (locationShowAdvancedSearch !== undefined) {
+      setShowAdvancedSearch(locationShowAdvancedSearch);
+    }
+  }, [location.state]);
+
   useEffect(() => {
     switch (mode) {
       case 'ranking': setState(new RankingListState({ axios })); break;
@@ -169,14 +180,16 @@ const StoryList = ({ user, initialMode, initialShowAdvancedSearch }) => {
         {stories && stories.length > 0 ? (
           stories.map((story) => (
             <Card key={story._id} sx={{ width: 300, backgroundColor: '#424242', color: '#FFFFFF' }}>
-              {story.thumbnail && (
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={story.thumbnail}
-                  alt={story.title}
-                />
-              )}
+              <CardMedia
+                component="img"
+                height="140"
+                image={story.thumbnail || `https://picsum.photos/seed/${story._id || Math.random()}/200/300`}
+                alt={story.title}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = `https://picsum.photos/seed/${story._id || Math.random()}/200/300`;
+                }}
+              />
               <CardContent>
                 <Typography variant="h6">{story.title}</Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ color: '#B0BEC5' }}>

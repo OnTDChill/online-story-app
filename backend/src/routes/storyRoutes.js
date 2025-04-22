@@ -1,5 +1,5 @@
 const express = require('express');
-const { createStory, getStories, getStoryById, getChaptersByStory } = require('../controllers/storyController');
+const { createStory, getStories, getStoryById, getChaptersByStory, getNarutoChapters } = require('../controllers/storyController');
 const authMiddleware = require('../middleware/authMiddleware');
 const storyThumbnailUpload = require('../middleware/storyThumbnailUpload');
 const router = express.Router();
@@ -31,7 +31,10 @@ router.post('/with-upload',
   createStory
 );
 router.get('/', getStories);
+router.get('/naruto/chapters', getNarutoChapters);
 router.get('/:id', getStoryById);
 router.get('/:id/chapters', getChaptersByStory);
+
+
 
 module.exports = router;

@@ -19,6 +19,9 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static files
+app.use('/uploads', express.static(path.join(__dirname, 'Uploads')));
+
 // Ensure upload directory exists
 const uploadDir = path.join(__dirname, 'Uploads', 'simple');
 if (!fs.existsSync(uploadDir)) {
@@ -52,11 +55,11 @@ app.post('/api/create-story', upload.single('thumbnail'), async (req, res) => {
   console.log('Form submission received:');
   console.log('Body:', req.body);
   console.log('File:', req.file);
-  
+
   try {
     // Extract data from form
     const { title, description, author, genre, number_of_chapters, status, type } = req.body;
-    
+
     // Validate required fields
     if (!title || !author || !genre || !number_of_chapters) {
       return res.status(400).json({
@@ -64,15 +67,16 @@ app.post('/api/create-story', upload.single('thumbnail'), async (req, res) => {
         received: { title, author, genre, number_of_chapters }
       });
     }
-    
-    // Return success response
+
+    // Return success response with full URL for the thumbnail
     res.json({
       message: 'Story data received successfully',
       body: req.body,
       file: req.file ? {
         filename: req.file.filename,
         mimetype: req.file.mimetype,
-        size: req.file.size
+        size: req.file.size,
+        url: `http://localhost:${port}/uploads/simple/${req.file.filename}`
       } : null
     });
   } catch (error) {

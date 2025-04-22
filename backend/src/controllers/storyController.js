@@ -105,11 +105,52 @@ const getStoryById = async (req, res) => {
 
 const getChaptersByStory = async (req, res) => {
   try {
-    const chapters = await Chapter.find({ story: req.params.id });
+    console.log('Getting chapters for story ID:', req.params.id);
+
+    // Sử dụng mongoose.Types.ObjectId để chuyển đổi ID
+    const mongoose = require('mongoose');
+    let storyId;
+
+    try {
+      storyId = new mongoose.Types.ObjectId(req.params.id);
+    } catch (err) {
+      console.error('Invalid ObjectId format:', err);
+      return res.status(400).json({ message: 'Invalid story ID format' });
+    }
+
+    // Tìm các chương của truyện
+    const chapters = await Chapter.find({ story: storyId }).sort({ chapter_number: 1 });
+    console.log('Found chapters with story field:', chapters.length);
+
+    // Nếu không tìm thấy, thử tìm với story_id
+    if (chapters.length === 0) {
+      const chaptersWithStoryId = await Chapter.find({ story_id: req.params.id }).sort({ chapter_number: 1 });
+      console.log('Found chapters with story_id field:', chaptersWithStoryId.length);
+      return res.json(chaptersWithStoryId);
+    }
+
+    // Trả về kết quả
     res.json(chapters);
   } catch (error) {
+    console.error('Error getting chapters:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
 
-module.exports = { createStory, getStories, getStoryById, getChaptersByStory };
+const getNarutoChapters = async (req, res) => {
+  try {
+    console.log('Getting Naruto chapters from storyController.js');
+
+    // Lấy tất cả các chương trong cơ sở dữ liệu
+    const allChapters = await Chapter.find({}).sort({ chapter_number: 1 });
+    console.log('All chapters in database:', allChapters.length);
+
+    // Trả về kết quả
+    res.json(allChapters);
+  } catch (error) {
+    console.error('Error getting all chapters:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+module.exports = { createStory, getStories, getStoryById, getChaptersByStory, getNarutoChapters };
