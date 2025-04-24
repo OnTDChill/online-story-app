@@ -277,7 +277,27 @@ const MainLayout = ({ children, setUser }) => {
             </h3>
             <div className="bg-white bg-opacity-10 rounded-lg p-4 h-72 overflow-y-auto scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-300">
               <div className="space-y-4">
-                {[1, 2, 3, 4, 5].map((item) => (
+                <div className="flex items-start space-x-3 pb-3 border-b border-white border-opacity-20">
+                  <Link to="/doraemon">
+                    <img
+                      src="/data/manga/doraemon/cover.jpg"
+                      alt="Doraemon"
+                      className="w-16 h-20 object-cover rounded-md shadow-md"
+                    />
+                  </Link>
+                  <div>
+                    <Link to="/doraemon">
+                      <h4 className="font-bold text-sm hover:text-blue-300">Doraemon</h4>
+                    </Link>
+                    <p className="text-xs text-white text-opacity-80 mt-1">Thể loại: Hài hước, Phiêu lưu</p>
+                    <div className="flex items-center mt-1">
+                      <span className="text-xs bg-red-600 px-2 py-0.5 rounded-full">HOT</span>
+                      <span className="text-xs ml-2">⭐ 4.9</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {[2, 3, 4, 5].map((item) => (
                   <div key={item} className="flex items-start space-x-3 pb-3 border-b border-white border-opacity-20">
                     <img
                       src={`https://picsum.photos/200/300?random=${item}`}
