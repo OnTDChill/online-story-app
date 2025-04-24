@@ -1,0 +1,106 @@
+[
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c3e1"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e1",
+    "number": 1,
+    "title": "Tập 1",
+    "url": "/data/manga/doraemon/Vol01.pdf",
+    "pages": 200,
+    "createdAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c3e2"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e1",
+    "number": 2,
+    "title": "Tập 2",
+    "url": "/data/manga/doraemon/Vol02.pdf",
+    "pages": 10,
+    "images": [
+      "/data/manga/doraemon/chapters/2/001.jpg",
+      "/data/manga/doraemon/chapters/2/002.jpg",
+      "/data/manga/doraemon/chapters/2/003.jpg",
+      "/data/manga/doraemon/chapters/2/004.jpg",
+      "/data/manga/doraemon/chapters/2/005.jpg",
+      "/data/manga/doraemon/chapters/2/006.jpg",
+      "/data/manga/doraemon/chapters/2/007.jpg",
+      "/data/manga/doraemon/chapters/2/008.jpg",
+      "/data/manga/doraemon/chapters/2/009.jpg",
+      "/data/manga/doraemon/chapters/2/010.jpg"
+    ],
+    "createdAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c3e3"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e1",
+    "number": 3,
+    "title": "Tập 3",
+    "url": "/data/manga/doraemon/Vol03.pdf",
+    "pages": 10,
+    "images": [
+      "/data/manga/doraemon/chapters/3/001.jpg",
+      "/data/manga/doraemon/chapters/3/002.jpg",
+      "/data/manga/doraemon/chapters/3/003.jpg",
+      "/data/manga/doraemon/chapters/3/004.jpg",
+      "/data/manga/doraemon/chapters/3/005.jpg",
+      "/data/manga/doraemon/chapters/3/006.jpg",
+      "/data/manga/doraemon/chapters/3/007.jpg",
+      "/data/manga/doraemon/chapters/3/008.jpg",
+      "/data/manga/doraemon/chapters/3/009.jpg",
+      "/data/manga/doraemon/chapters/3/010.jpg"
+    ],
+    "createdAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c3e4"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e2",
+    "number": 1,
+    "title": "Uzumaki Naruto",
+    "url": "/uploads/naruto/chapters/chapter1.pdf",
+    "pages": 45,
+    "createdAt": {
+      "$date": "2023-01-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-02T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c3e5"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e2",
+    "number": 2,
+    "title": "Konohamaru",
+    "url": "/uploads/naruto/chapters/chapter2.pdf",
+    "pages": 42,
+    "createdAt": {
+      "$date": "2023-01-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-02T00:00:00.000Z"
+    }
+  }
+]

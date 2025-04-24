@@ -1,0 +1,68 @@
+[
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c2e1"
+    },
+    "title": "Doraemon",
+    "author": "Fujiko F. Fujio",
+    "description": "Doraemon là một chú mèo máy được gửi ngược về quá khứ từ thế kỷ 22 bởi cháu trai của Nobita để giúp đỡ ông mình sống một cuộc đời hạnh phúc hơn. Doraemon có một chiếc túi thần kỳ với vô số bảo bối từ tương lai.",
+    "genre": ["Hài hước", "Khoa học viễn tưởng", "Đời thường", "Phiêu lưu"],
+    "status": "Hoàn thành",
+    "thumbnail": "/data/manga/doraemon/cover.jpg",
+    "type": "Manga",
+    "releaseYear": 1969,
+    "chapters": 27,
+    "views": 15000,
+    "rating": 4.9,
+    "createdAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c2e2"
+    },
+    "title": "Naruto",
+    "author": "Masashi Kishimoto",
+    "description": "Naruto là câu chuyện về Naruto Uzumaki, một ninja trẻ muốn tìm kiếm sự công nhận và ước mơ trở thành Hokage, ninja dẫn đầu làng của mình.",
+    "genre": ["Hành động", "Phiêu lưu", "Võ thuật", "Siêu nhiên"],
+    "status": "Hoàn thành",
+    "thumbnail": "/uploads/naruto/naruto-cover.jpg",
+    "type": "Manga",
+    "releaseYear": 1999,
+    "chapters": 700,
+    "views": 25000,
+    "rating": 4.8,
+    "createdAt": {
+      "$date": "2023-01-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-02T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c2e3"
+    },
+    "title": "One Piece",
+    "author": "Eiichiro Oda",
+    "description": "One Piece là câu chuyện về Monkey D. Luffy và đồng đội của cậu trong cuộc hành trình tìm kiếm kho báu One Piece và trở thành Vua Hải Tặc.",
+    "genre": ["Hành động", "Phiêu lưu", "Hài hước", "Siêu nhiên"],
+    "status": "Đang tiến hành",
+    "thumbnail": "/uploads/stories/one-piece-cover.jpg",
+    "type": "Manga",
+    "releaseYear": 1997,
+    "chapters": 1000,
+    "views": 30000,
+    "rating": 4.9,
+    "createdAt": {
+      "$date": "2023-01-03T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-03T00:00:00.000Z"
+    }
+  }
+]

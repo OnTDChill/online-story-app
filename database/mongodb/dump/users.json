@@ -1,0 +1,47 @@
+[
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c2d3"
+    },
+    "username": "admin",
+    "email": "admin@example.com",
+    "password": "$2b$10$XJvjN8RZRGrNX9Uv8oRl7OzJkLUYYaX5t5HhT6JQh1QhLcZ9X9Ht6",
+    "role": "admin",
+    "createdAt": {
+      "$date": "2023-05-02T10:15:31.123Z"
+    },
+    "updatedAt": {
+      "$date": "2023-05-02T10:15:31.123Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c2d4"
+    },
+    "username": "user1",
+    "email": "user1@example.com",
+    "password": "$2b$10$XJvjN8RZRGrNX9Uv8oRl7OzJkLUYYaX5t5HhT6JQh1QhLcZ9X9Ht6",
+    "role": "user",
+    "createdAt": {
+      "$date": "2023-05-02T10:20:45.789Z"
+    },
+    "updatedAt": {
+      "$date": "2023-05-02T10:20:45.789Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c2d5"
+    },
+    "username": "author1",
+    "email": "author1@example.com",
+    "password": "$2b$10$XJvjN8RZRGrNX9Uv8oRl7OzJkLUYYaX5t5HhT6JQh1QhLcZ9X9Ht6",
+    "role": "author",
+    "createdAt": {
+      "$date": "2023-05-02T10:25:12.456Z"
+    },
+    "updatedAt": {
+      "$date": "2023-05-02T10:25:12.456Z"
+    }
+  }
+]

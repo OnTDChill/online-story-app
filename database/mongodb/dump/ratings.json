@@ -1,0 +1,92 @@
+[
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c6e1"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e1",
+    "userId": "6450b1c3e4b0a6d8b0f1c2d4",
+    "username": "user1",
+    "rating": 5,
+    "createdAt": {
+      "$date": "2023-05-10T08:20:30.123Z"
+    },
+    "updatedAt": {
+      "$date": "2023-05-10T08:20:30.123Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c6e2"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e1",
+    "userId": "6450b1c3e4b0a6d8b0f1c2d5",
+    "username": "author1",
+    "rating": 4,
+    "createdAt": {
+      "$date": "2023-05-11T10:25:45.789Z"
+    },
+    "updatedAt": {
+      "$date": "2023-05-11T10:25:45.789Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c6e3"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e2",
+    "userId": "6450b1c3e4b0a6d8b0f1c2d4",
+    "username": "user1",
+    "rating": 5,
+    "createdAt": {
+      "$date": "2023-05-12T14:35:15.456Z"
+    },
+    "updatedAt": {
+      "$date": "2023-05-12T14:35:15.456Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c6e4"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e2",
+    "userId": "6450b1c3e4b0a6d8b0f1c2d5",
+    "username": "author1",
+    "rating": 4,
+    "createdAt": {
+      "$date": "2023-05-13T16:50:30.789Z"
+    },
+    "updatedAt": {
+      "$date": "2023-05-13T16:50:30.789Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c6e5"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e3",
+    "userId": "6450b1c3e4b0a6d8b0f1c2d4",
+    "username": "user1",
+    "rating": 5,
+    "createdAt": {
+      "$date": "2023-05-14T09:10:20.123Z"
+    },
+    "updatedAt": {
+      "$date": "2023-05-14T09:10:20.123Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c6e6"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e3",
+    "userId": "6450b1c3e4b0a6d8b0f1c2d5",
+    "username": "author1",
+    "rating": 5,
+    "createdAt": {
+      "$date": "2023-05-15T11:25:40.456Z"
+    },
+    "updatedAt": {
+      "$date": "2023-05-15T11:25:40.456Z"
+    }
+  }
+]

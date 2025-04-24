@@ -1,0 +1,14 @@
+# Ignore MongoDB data files
+*.wt
+*.lock
+*.turtle
+*.0*
+WiredTiger*
+mongod.lock
+storage.bson
+_mdb_catalog.wt
+journal/
+diagnostic.data/
+
+# Keep JSON dumps
+!*.json

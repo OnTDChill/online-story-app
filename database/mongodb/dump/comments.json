@@ -1,0 +1,62 @@
+[
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c5e1"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e1",
+    "userId": "6450b1c3e4b0a6d8b0f1c2d4",
+    "username": "user1",
+    "content": "Doraemon là bộ truyện tuổi thơ của tôi. Rất hay và ý nghĩa!",
+    "createdAt": {
+      "$date": "2023-05-10T08:15:30.123Z"
+    },
+    "updatedAt": {
+      "$date": "2023-05-10T08:15:30.123Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c5e2"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e1",
+    "userId": "6450b1c3e4b0a6d8b0f1c2d5",
+    "username": "author1",
+    "content": "Tôi rất thích những bảo bối của Doraemon, đặc biệt là cánh cửa thần kỳ!",
+    "createdAt": {
+      "$date": "2023-05-11T10:20:45.789Z"
+    },
+    "updatedAt": {
+      "$date": "2023-05-11T10:20:45.789Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c5e3"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e2",
+    "userId": "6450b1c3e4b0a6d8b0f1c2d4",
+    "username": "user1",
+    "content": "Naruto là bộ truyện rất hay về tình bạn và sự kiên trì!",
+    "createdAt": {
+      "$date": "2023-05-12T14:30:15.456Z"
+    },
+    "updatedAt": {
+      "$date": "2023-05-12T14:30:15.456Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c5e4"
+    },
+    "storyId": "6450b1c3e4b0a6d8b0f1c2e3",
+    "userId": "6450b1c3e4b0a6d8b0f1c2d5",
+    "username": "author1",
+    "content": "One Piece có cốt truyện rất sâu sắc và các nhân vật đều có câu chuyện riêng rất thú vị!",
+    "createdAt": {
+      "$date": "2023-05-13T16:45:30.789Z"
+    },
+    "updatedAt": {
+      "$date": "2023-05-13T16:45:30.789Z"
+    }
+  }
+]

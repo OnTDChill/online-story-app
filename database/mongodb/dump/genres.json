@@ -1,0 +1,119 @@
+[
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c4e1"
+    },
+    "name": "Hành động",
+    "description": "Thể loại có nhiều cảnh chiến đấu, đánh nhau, rượt đuổi",
+    "createdAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c4e2"
+    },
+    "name": "Phiêu lưu",
+    "description": "Thể loại có các cuộc phiêu lưu, khám phá, mạo hiểm",
+    "createdAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c4e3"
+    },
+    "name": "Hài hước",
+    "description": "Thể loại có nhiều tình huống hài hước, vui nhộn",
+    "createdAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c4e4"
+    },
+    "name": "Tình cảm",
+    "description": "Thể loại lãng mạn, tình yêu, tình cảm",
+    "createdAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c4e5"
+    },
+    "name": "Kinh dị",
+    "description": "Thể loại có các yếu tố kinh dị, ma quái, rùng rợn",
+    "createdAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c4e6"
+    },
+    "name": "Khoa học viễn tưởng",
+    "description": "Thể loại có các yếu tố khoa học, công nghệ tương lai",
+    "createdAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c4e7"
+    },
+    "name": "Đời thường",
+    "description": "Thể loại về cuộc sống hàng ngày, sinh hoạt thường nhật",
+    "createdAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c4e8"
+    },
+    "name": "Võ thuật",
+    "description": "Thể loại về các môn võ thuật, đối kháng",
+    "createdAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6450b1c3e4b0a6d8b0f1c4e9"
+    },
+    "name": "Siêu nhiên",
+    "description": "Thể loại có các yếu tố siêu nhiên, phép thuật, ma thuật",
+    "createdAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-01-01T00:00:00.000Z"
+    }
+  }
+]
