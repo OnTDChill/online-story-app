@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 /**
  * MainLayout - Layout chính cho toàn bộ ứng dụng
  */
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children, setUser }) => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const location = useLocation();
@@ -78,15 +78,20 @@ const MainLayout = ({ children }) => {
     // Thông báo đăng xuất thành công
     toast.success('Đăng xuất thành công');
 
-    // Chuyển hướng về trang chủ
-    navigate('/');
-
     // Cập nhật trạng thái
     setIsLoggedIn(false);
     setIsAdmin(false);
+    
+    // Cập nhật trạng thái user trong AppNew.js
+    if (setUser) {
+      setUser(null);
+    }
 
     // Kích hoạt sự kiện để cập nhật trạng thái đăng nhập
     window.dispatchEvent(new Event('loginStatusChange'));
+    
+    // Chuyển hướng về trang chủ
+    window.location.href = '/';
   };
 
   // Xử lý chuyển đến trang cài đặt

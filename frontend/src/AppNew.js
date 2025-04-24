@@ -52,18 +52,18 @@ function AppNew() {
       <Router>
         <Routes>
           {/* Các trang sử dụng MainLayout */}
-          <Route path="/" element={<MainLayout><HomePage /></MainLayout>} />
-          <Route path="/advanced-filter" element={<MainLayout><AdvancedFilter /></MainLayout>} />
-          <Route path="/genres" element={<MainLayout><GenreList /></MainLayout>} />
-          <Route path="/notifications" element={<MainLayout><NotificationList /></MainLayout>} />
+          <Route path="/" element={<MainLayout setUser={setUser}><HomePage /></MainLayout>} />
+          <Route path="/advanced-filter" element={<MainLayout setUser={setUser}><AdvancedFilter /></MainLayout>} />
+          <Route path="/genres" element={<MainLayout setUser={setUser}><GenreList /></MainLayout>} />
+          <Route path="/notifications" element={<MainLayout setUser={setUser}><NotificationList /></MainLayout>} />
           {/* Đã chuyển báo cáo doanh thu vào dashboard admin */}
-          <Route path="/story/:id" element={<MainLayout><StoryDetail /></MainLayout>} />
+          <Route path="/story/:id" element={<MainLayout setUser={setUser}><StoryDetail /></MainLayout>} />
 
           {/* Các trang mới thêm */}
-          <Route path="/rankings" element={<MainLayout><Rankings /></MainLayout>} />
-          <Route path="/new-stories" element={<MainLayout><NewStories /></MainLayout>} />
-          <Route path="/completed-stories" element={<MainLayout><CompletedStories /></MainLayout>} />
-          <Route path="/doraemon" element={<MainLayout><DoraemonDetail /></MainLayout>} />
+          <Route path="/rankings" element={<MainLayout setUser={setUser}><Rankings /></MainLayout>} />
+          <Route path="/new-stories" element={<MainLayout setUser={setUser}><NewStories /></MainLayout>} />
+          <Route path="/completed-stories" element={<MainLayout setUser={setUser}><CompletedStories /></MainLayout>} />
+          <Route path="/doraemon" element={<MainLayout setUser={setUser}><DoraemonDetail /></MainLayout>} />
           <Route path="/doraemon/chapter/:chapterNumber" element={<DoraemonPDFReader />} />
 
           {/* Trang đọc truyện không sử dụng MainLayout */}
