@@ -1,0 +1,21 @@
+{
+  "_id": "one-piece",
+  "title": "One Piece",
+  "author": "Eiichiro Oda",
+  "description": "One Piece là câu chuyện về Monkey D. Luffy...",
+  "thumbnail": "https://i.imgur.com/default.jpg",
+  "genre": "Hành động, Phiêu lưu, Hài hước, Siêu nhiên",
+  "status": "ongoing",
+  "views": 918427,
+  "likes": 64940,
+  "rating": 4.9,
+  "createdAt": "2024-04-23T14:47:44.266259",
+  "updatedAt": "2025-04-23T14:47:44.266272",
+  "tags": [
+    "Hành động",
+    "Phiêu lưu",
+    "Hài hước",
+    "Siêu nhiên"
+  ],
+  "chapters": 6
+}

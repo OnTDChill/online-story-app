@@ -1,0 +1,23 @@
+{
+  "_id": "naruto",
+  "title": "Naruto",
+  "author": "Kishimoto Masashi",
+  "description": "Naruto là câu chuyện về Uzumaki Naruto, một ninja trẻ muốn tìm kiếm sự công nhận và ước mơ trở thành Hokage, ninja dẫn đầu làng. Cậu được phong ấn Cửu Vĩ Hồ Ly trong người, một con quái vật tấn công làng Lá trước kia. Điều này khiến cậu bị dân làng xa lánh, và vì thế Naruto quyết tâm chứng minh giá trị bản thân.",
+  "thumbnail": "/data/manga/naruto/cover.jpg",
+  "genre": "Hành động, Phiêu lưu, Võ thuật, Siêu nhiên",
+  "status": "ongoing",
+  "views": 225680,
+  "likes": 56991,
+  "rating": 4.4,
+  "createdAt": "2024-04-23T14:41:54.213214",
+  "updatedAt": "2025-04-23T14:41:54.213239",
+  "tags": [
+    "Hành động",
+    "Phiêu lưu",
+    "Võ thuật",
+    "Siêu nhiên",
+    "Shounen",
+    "Ninja"
+  ],
+  "chapters": 10
+}

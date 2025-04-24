@@ -21,8 +21,19 @@ const Login = ({ setUser }) => {
       console.log('Sending request to:', 'http://localhost:5000/api/user/login');
       const response = await axios.post('http://localhost:5000/api/user/login', formData);
       console.log('Login response:', response.data);
+
+      // Lưu token và thông tin người dùng vào localStorage
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userRole', response.data.user.role);
+      localStorage.setItem('userId', response.data.user._id);
+
+      // Cập nhật trạng thái người dùng
       setUser(response.data.user);
+
+      // Kích hoạt sự kiện để cập nhật trạng thái đăng nhập
+      window.dispatchEvent(new Event('loginStatusChange'));
+
+      // Chuyển hướng về trang chủ
       navigate('/');
     } catch (err) {
       console.error('Login error:', err);

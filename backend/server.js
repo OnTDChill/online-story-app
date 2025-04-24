@@ -15,6 +15,8 @@ const readingProgressRoutes = require('./src/routes/readingProgressRoutes');
 const ReadingProgressManager = require('./src/utils/ReadingProgressManager');
 const ReadingProgress = require('./src/models/ReadingProgress');
 const adminRoutes = require('./src/routes/adminRoutes');
+const commentRoutes = require('./src/routes/commentRoutes');
+const advancedFilterRoutes = require('./src/routes/advancedFilterRoutes');
 const narutoChaptersRoutes = require('./src/routes/narutochapters');
 
 const app = express();
@@ -70,6 +72,8 @@ app.use('/api/stories', storyRoutes);
 app.use('/api/genres', genreRoutes);
 app.use('/api/progress', readingProgressRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/comments', commentRoutes);
+app.use('/api/filter', advancedFilterRoutes);
 
 // Phục vụ tệp tĩnh
 app.use('/uploads', express.static(path.join(__dirname, 'Uploads')));
