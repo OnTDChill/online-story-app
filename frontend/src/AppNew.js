@@ -21,6 +21,8 @@ import Rankings from './components/rankings/Rankings';
 import NewStories from './components/story/NewStories';
 import CompletedStories from './components/story/CompletedStories';
 import AdminDashboard from './components/admin/AdminDashboard';
+import ImageReader from './components/reader/ImageReader';
+import MangaDetail from './components/manga/MangaDetail';
 
 // Import các component cũ
 import Login from './components/Login';
@@ -70,6 +72,8 @@ function AppNew() {
           <Route path="/story/:storyId/chapter/:chapterNumber" element={<ChapterReader />} />
           <Route path="/cbz-story/:storyId" element={<CBZStoryViewer />} />
           <Route path="/pdf-reader" element={<SimplePDFViewer />} />
+          <Route path="/manga/:mangaId/chapter/:chapterId" element={<ImageReader />} />
+          <Route path="/manga/:mangaId" element={<MangaDetail />} />
 
           {/* Các trang đăng nhập/đăng ký */}
           <Route path="/login" element={!user ? <Login setUser={setUser} /> : <Navigate to="/" />} />
@@ -85,6 +89,7 @@ function AppNew() {
           <Route path="/author" element={<AuthorDashboard />} />
           <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate to="/login" />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/import-cbz" element={user && user.role === 'Admin' ? <MainLayout setUser={setUser}><AdminDashboard activeTab="import-cbz" /></MainLayout> : <Navigate to="/login" />} />
         </Routes>
 
         {/* Toast notifications */}

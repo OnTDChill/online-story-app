@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const connectDB = require('./src/config/db');
 const { port, nodeEnv, JWT_SECRET } = require('./src/config/env');
 const path = require('path');
+const fs = require('fs');
 const storyThumbnailUpload = require('./src/middleware/storyThumbnailUpload');
 const errorHandler = require('./src/middleware/errorHandler');
 const authRoutes = require('./src/routes/authRoutes');
@@ -18,14 +19,21 @@ const adminRoutes = require('./src/routes/adminRoutes');
 const commentRoutes = require('./src/routes/commentRoutes');
 const advancedFilterRoutes = require('./src/routes/advancedFilterRoutes');
 const narutoChaptersRoutes = require('./src/routes/narutochapters');
+const cbzRoutes = require('./src/routes/cbzRoutes');
+const mangaDirectoriesRoutes = require('./src/routes/mangaDirectoriesRoute');
 
 const app = express();
 
 // Configure CORS
 app.use(cors({
   origin: ['http://localhost:3000', 'http://localhost:3001'], // Allow both common React ports
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Add OPTIONS handling for preflight requests
+app.options('*', cors());
 
 // Body parsers
 app.use(express.json());
@@ -64,6 +72,45 @@ app.get('/api/all-chapters', async (req, res) => {
   }
 });
 
+// API endpoint để lấy danh sách thư mục manga
+app.get('/api/manga-directories', async (req, res) => {
+  try {
+    console.log('Getting manga directories directly from server.js');
+    const mangaDir = path.join(__dirname, '..', 'frontend', 'public', 'data', 'manga');
+
+    if (!fs.existsSync(mangaDir)) {
+      console.log('Manga directory does not exist');
+      return res.status(404).json({
+        success: false,
+        message: 'Manga directory not found',
+        path: mangaDir
+      });
+    }
+
+    const items = fs.readdirSync(mangaDir);
+    console.log('Items in manga directory:', items);
+
+    const directories = [];
+    for (const item of items) {
+      const itemPath = path.join(mangaDir, item);
+      const stats = fs.statSync(itemPath);
+      if (stats.isDirectory()) {
+        directories.push(item);
+      }
+    }
+
+    console.log('Manga directories found:', directories);
+    res.json(directories);
+  } catch (error) {
+    console.error('Error getting manga directories:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error getting manga directories',
+      error: error.message
+    });
+  }
+});
+
 // Sử dụng các routes
 app.use('/api/user', authRoutes);
 app.use('/api/chapters', chapterRoutes);
@@ -74,6 +121,9 @@ app.use('/api/progress', readingProgressRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/filter', advancedFilterRoutes);
+app.use('/api/cbz', cbzRoutes);
+app.use('/api/manga-directories', mangaDirectoriesRoutes);
+
 
 // Phục vụ tệp tĩnh
 app.use('/uploads', express.static(path.join(__dirname, 'Uploads')));
@@ -90,6 +140,56 @@ app.get('/api/test-endpoint', (req, res) => {
   console.log('Test endpoint accessed');
   res.json({ message: 'Test endpoint is working!' });
 });
+
+// Test endpoint for CBZ
+app.get('/api/cbz-test', (req, res) => {
+  console.log('CBZ test endpoint accessed directly from server.js');
+  res.json({ success: true, message: 'CBZ test endpoint is working!' });
+});
+
+// Test upload endpoint
+app.post('/api/test-upload', (req, res) => {
+  console.log('Test upload endpoint accessed');
+  console.log('Headers:', req.headers);
+  console.log('Body:', req.body);
+  res.json({ success: true, message: 'Test upload endpoint is working!' });
+});
+
+// Direct CBZ upload endpoint in server.js
+app.post('/api/direct-cbz-upload', storyThumbnailUpload.single('cbzFile'), (req, res) => {
+  console.log('Direct CBZ upload endpoint accessed');
+  console.log('Headers:', req.headers);
+  console.log('File:', req.file);
+  console.log('Body:', req.body);
+
+  if (!req.file) {
+    return res.status(400).json({ success: false, message: 'No file uploaded' });
+  }
+
+  res.json({
+    success: true,
+    message: 'File uploaded successfully',
+    file: {
+      filename: req.file.filename,
+      originalname: req.file.originalname,
+      size: req.file.size
+    }
+  });
+});
+
+// Đảm bảo thư mục uploads tồn tại
+const uploadsDir = path.join(__dirname, 'Uploads', 'temp');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log(`Created uploads directory: ${uploadsDir}`);
+}
+
+// Đảm bảo thư mục manga tồn tại
+const mangaDir = path.join(__dirname, '..', 'frontend', 'public', 'data', 'manga');
+if (!fs.existsSync(mangaDir)) {
+  fs.mkdirSync(mangaDir, { recursive: true });
+  console.log(`Created manga directory: ${mangaDir}`);
+}
 
 // Simple post test
 app.post('/api/test-post', (req, res) => {

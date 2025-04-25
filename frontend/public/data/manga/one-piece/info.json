@@ -2,20 +2,21 @@
   "_id": "one-piece",
   "title": "One Piece",
   "author": "Eiichiro Oda",
-  "description": "One Piece là câu chuyện về Monkey D. Luffy...",
-  "thumbnail": "https://i.imgur.com/default.jpg",
-  "genre": "Hành động, Phiêu lưu, Hài hước, Siêu nhiên",
-  "status": "ongoing",
-  "views": 918427,
+  "description": "One Piece là câu chuyện về Monkey D. Luffy, một cậu bé có ước mơ trở thành Vua Hải Tặc và tìm kiếm kho báu One Piece.",
+  "thumbnail": "/data/manga/one-piece/cover.jpg",
+  "genre": "Phiêu lưu",
+  "genres": ["Phiêu lưu", "Hành động", "Hài hước", "Siêu nhiên"],
+  "status": "Đang tiến hành",
+  "views": 91840,
   "likes": 64940,
   "rating": 4.9,
   "createdAt": "2024-04-23T14:47:44.266259",
-  "updatedAt": "2025-04-23T14:47:44.266272",
+  "updatedAt": "2024-05-15T14:47:44.266272",
   "tags": [
     "Hành động",
     "Phiêu lưu",
     "Hài hước",
     "Siêu nhiên"
   ],
-  "chapters": 6
+  "chapters": 1000
 }

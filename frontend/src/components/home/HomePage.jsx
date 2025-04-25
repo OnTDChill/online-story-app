@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { FaEye, FaHeart, FaBookmark, FaStar, FaChevronRight } from 'react-icons/fa';
 import MangaSection from './MangaSection';
+import HotStoriesSection from './HotStoriesSection';
+import MangaService from '../../services/MangaService';
 
 /**
  * HomePage - Trang chủ của ứng dụng
@@ -14,48 +16,65 @@ const HomePage = () => {
   const [completedStories, setCompletedStories] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/';
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api/';
 
   // Lấy dữ liệu truyện
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // Lấy truyện nổi bật
-        const featuredResponse = await axios.get(`${API_URL}stories/featured`);
+        // Lấy danh sách truyện từ thư mục local
+        const mangas = await MangaService.getMangas();
+        console.log('Loaded mangas from local:', mangas.length);
 
-        // Lấy truyện mới cập nhật
-        const latestResponse = await axios.get(`${API_URL}stories/latest`);
+        if (mangas.length > 0) {
+          // Truyện nổi bật - lấy 5 truyện có rating cao nhất
+          const featured = [...mangas]
+            .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+            .slice(0, 5);
+          setFeaturedStories(featured);
 
-        // Lấy truyện phổ biến
-        const popularResponse = await axios.get(`${API_URL}stories/popular`);
+          // Truyện mới cập nhật - lấy 10 truyện mới nhất
+          const latest = [...mangas]
+            .sort((a, b) => new Date(b.updatedAt || b.createdAt || Date.now()) -
+                           new Date(a.updatedAt || a.createdAt || Date.now()))
+            .slice(0, 10);
+          setLatestStories(latest);
 
-        // Lấy truyện đã hoàn thành
-        const completedResponse = await axios.get(`${API_URL}stories/completed`);
+          // Truyện phổ biến - lấy 10 truyện có lượt xem cao nhất
+          const popular = [...mangas]
+            .sort((a, b) => (b.views || 0) - (a.views || 0))
+            .slice(0, 10);
+          setPopularStories(popular);
 
-        if (featuredResponse.status === 200) {
-          setFeaturedStories(featuredResponse.data);
-        }
+          // Truyện đã hoàn thành
+          const completed = mangas
+            .filter(manga =>
+              manga.status === 'Hoàn thành' ||
+              manga.status === 'Completed' ||
+              manga.status === 'completed'
+            )
+            .slice(0, 5);
 
-        if (latestResponse.status === 200) {
-          setLatestStories(latestResponse.data);
-        }
-
-        if (popularResponse.status === 200) {
-          setPopularStories(popularResponse.data);
-        }
-
-        if (completedResponse.status === 200) {
-          setCompletedStories(completedResponse.data);
+          if (completed.length > 0) {
+            setCompletedStories(completed);
+          } else {
+            // Nếu không có truyện nào đã hoàn thành, lấy 5 truyện bất kỳ
+            setCompletedStories(mangas.slice(0, 5));
+          }
+        } else {
+          console.log('No mangas found');
+          setFeaturedStories([]);
+          setLatestStories([]);
+          setPopularStories([]);
+          setCompletedStories([]);
         }
       } catch (error) {
         console.error('Lỗi khi lấy dữ liệu truyện:', error);
-
-        // Dữ liệu mẫu để test
-        setFeaturedStories(generateSampleStories(5));
-        setLatestStories(generateSampleStories(10));
-        setPopularStories(generateSampleStories(10));
-        setCompletedStories(generateSampleStories(10));
+        setFeaturedStories([]);
+        setLatestStories([]);
+        setPopularStories([]);
+        setCompletedStories([]);
       } finally {
         setLoading(false);
       }
@@ -63,33 +82,6 @@ const HomePage = () => {
 
     fetchData();
   }, []);
-
-  // Tạo dữ liệu mẫu để test
-  const generateSampleStories = (count) => {
-    const statuses = ['ongoing', 'completed'];
-    const genreNames = ['Hành động', 'Tình cảm', 'Kinh dị', 'Hài hước', 'Phiêu lưu'];
-
-    return Array.from({ length: count }, (_, i) => {
-      const createdAt = new Date();
-      createdAt.setDate(createdAt.getDate() - Math.floor(Math.random() * 30));
-
-      return {
-        _id: `story-${i + 1}`,
-        title: `Truyện mẫu ${i + 1}`,
-        author: `Tác giả ${Math.floor(i / 3) + 1}`,
-        description: `Mô tả cho truyện mẫu ${i + 1}. Đây là một truyện rất hay và hấp dẫn với nhiều tình tiết bất ngờ.`,
-        genre: genreNames[Math.floor(Math.random() * genreNames.length)],
-        status: statuses[Math.floor(Math.random() * statuses.length)],
-        views: Math.floor(Math.random() * 10000),
-        likes: Math.floor(Math.random() * 1000),
-        rating: (Math.random() * 2 + 3).toFixed(1), // Rating từ 3.0 đến 5.0
-        chapters: Math.floor(Math.random() * 100) + 1,
-        updatedAt: new Date(Date.now() - Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000)).toISOString(),
-        createdAt: createdAt.toISOString(),
-        thumbnail: `https://picsum.photos/id/${i + 10}/300/400`
-      };
-    });
-  };
 
   // Format thời gian cập nhật
   const formatUpdatedTime = (dateString) => {
@@ -148,7 +140,7 @@ const HomePage = () => {
                       <span>{featuredStories[0].genre}</span>
                     </div>
                     <Link
-                      to={`/story/${featuredStories[0]._id}`}
+                      to={`/manga/${featuredStories[0]._id}`}
                       className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
                     >
                       Đọc ngay
@@ -159,46 +151,7 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* Bảng xếp hạng */}
-          <section className="mb-8">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold">Bảng xếp hạng</h2>
-              <Link to="/rankings" className="text-blue-600 hover:underline flex items-center">
-                Xem tất cả <FaChevronRight className="ml-1" />
-              </Link>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {popularStories.slice(0, 6).map((story, index) => (
-                <div key={story._id} className="bg-white rounded-lg shadow-md overflow-hidden flex">
-                  <div className="w-10 bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
-                    {index + 1}
-                  </div>
-                  <div className="w-20 h-28">
-                    <img
-                      src={story.thumbnail}
-                      alt={story.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1 p-3">
-                    <h3 className="font-semibold text-lg mb-1 line-clamp-1">{story.title}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{story.author}</p>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <span className="flex items-center mr-3">
-                        <FaEye className="mr-1" />
-                        {story.views.toLocaleString()}
-                      </span>
-                      <span className="flex items-center">
-                        <FaStar className="text-yellow-400 mr-1" />
-                        {story.rating}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
 
           {/* Truyện mới cập nhật */}
           <section className="mb-8">
@@ -223,7 +176,7 @@ const HomePage = () => {
                   {latestStories.slice(0, 10).map((story) => (
                     <tr key={story._id} className="hover:bg-gray-50">
                       <td className="py-3 px-4">
-                        <Link to={`/story/${story._id}`} className="flex items-center">
+                        <Link to={`/manga/${story._id}`} className="flex items-center">
                           <img
                             src={story.thumbnail}
                             alt={story.title}
@@ -241,7 +194,7 @@ const HomePage = () => {
                         </span>
                       </td>
                       <td className="py-3 px-4 hidden md:table-cell">
-                        <Link to={`/story/${story._id}/chapter/${story.chapters}`} className="text-blue-600 hover:underline">
+                        <Link to={`/manga/${story._id}/chapter/${story.chapters}`} className="text-blue-600 hover:underline">
                           Chương {story.chapters}
                         </Link>
                       </td>
@@ -255,62 +208,11 @@ const HomePage = () => {
             </div>
           </section>
 
-          {/* Truyện mẫu One Piece */}
+          {/* Truyện manga */}
           <MangaSection
-            title="Truyện mẫu"
-            subtitle="Truyện được tải từ dữ liệu local"
+            title="Truyện manga"
+            subtitle="Bao gồm truyện Doraemon và các truyện tranh khác"
           />
-
-          {/* Truyện Doraemon */}
-          <section className="mb-8">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold">Doraemon</h2>
-              <Link to="/doraemon" className="text-blue-600 hover:underline flex items-center">
-                Xem chi tiết <FaChevronRight className="ml-1" />
-              </Link>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="md:flex">
-                <div className="md:w-1/4 p-4">
-                  <img
-                    src="/data/manga/doraemon/cover.jpg"
-                    alt="Doraemon"
-                    className="w-full h-auto rounded-lg shadow-md"
-                  />
-                </div>
-                <div className="md:w-3/4 p-4">
-                  <h3 className="text-xl font-bold mb-2">Doraemon</h3>
-                  <p className="text-gray-700 mb-4">
-                    Doraemon là một chú mèo máy được gửi ngược về quá khứ từ thế kỷ 22 bởi cháu trai của Nobita để giúp đỡ ông mình sống một cuộc đời hạnh phúc hơn. Doraemon có một chiếc túi thần kỳ với vô số bảo bối từ tương lai.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Hài hước</span>
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Khoa học viễn tưởng</span>
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Đời thường</span>
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Phiêu lưu</span>
-                  </div>
-                  <div className="flex items-center space-x-4 mb-4">
-                    <span className="flex items-center">
-                      <FaStar className="text-yellow-400 mr-1" />
-                      4.9
-                    </span>
-                    <span className="flex items-center">
-                      <FaEye className="mr-1" />
-                      15,000
-                    </span>
-                    <span>27 tập</span>
-                  </div>
-                  <Link
-                    to="/doraemon"
-                    className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-                  >
-                    Đọc ngay
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </section>
 
           {/* Truyện đã hoàn thành */}
           <section className="mb-8">
@@ -380,7 +282,6 @@ const HomePage = () => {
                   className="bg-white rounded-lg shadow-md p-4 text-center hover:bg-blue-50 transition-colors"
                 >
                   <h3 className="font-medium">{genre}</h3>
-                  <p className="text-sm text-gray-500">{Math.floor(Math.random() * 100) + 10} truyện</p>
                 </Link>
               ))}
             </div>

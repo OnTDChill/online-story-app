@@ -13,7 +13,10 @@ import Profile from './components/Profile';
 import Genres from './components/Genres';
 import AdminDashboard from './components/AdminDashboard';
 import TestForm from './components/TestForm';
-import HomePage from './pages/HomePage';
+import HomePage from './components/home/HomePage';
+import MangaDetail from './components/manga/MangaDetail';
+import MangaReader from './components/manga/MangaReader';
+import MangaList from './components/manga/MangaList';
 
 const theme = createTheme({
   palette: {
@@ -70,6 +73,14 @@ function App() {
           <Route path="/admin" element={user && user.role === 'Admin' ? <AdminDashboard /> : <Navigate to="/login" />} />
           <Route path="/test-form" element={<TestForm />} />
           <Route path="/grid" element={<HomePage />} />
+          <Route path="/manga" element={<MangaList />} />
+          <Route path="/manga/:mangaId" element={<MangaDetail />} />
+          <Route path="/manga/:mangaId/chapter/:chapterNumber" element={<MangaReader />} />
+          <Route path="/doraemon" element={<MangaDetail mangaId="doraemon" />} />
+          <Route path="/one-piece" element={<MangaDetail mangaId="one-piece" />} />
+          <Route path="/naruto" element={<MangaDetail mangaId="naruto" />} />
+          <Route path="/cua-thu" element={<MangaDetail mangaId="cưa_thủ" />} />
+          <Route path="/cua-thu/chapter/:chapterNumber" element={<MangaReader mangaId="cưa_thủ" />} />
         </Routes>
       </Router>
     </ThemeProvider>

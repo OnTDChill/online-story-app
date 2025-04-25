@@ -37,7 +37,7 @@ const SimplePDFViewer = ({ pdfUrl, title, onClose, chapters, currentChapter }) =
       const currentIndex = chapters.findIndex(ch => ch._id === currentChapter._id);
       if (currentIndex > 0) {
         const prevChapter = chapters[currentIndex - 1];
-        window.location.href = `/doraemon/chapter/${prevChapter.number}`;
+        navigate(`/manga/${prevChapter.mangaId || window.location.pathname.split('/')[2]}/chapter/${prevChapter.number}`);
       }
     }
   };
@@ -48,7 +48,7 @@ const SimplePDFViewer = ({ pdfUrl, title, onClose, chapters, currentChapter }) =
       const currentIndex = chapters.findIndex(ch => ch._id === currentChapter._id);
       if (currentIndex < chapters.length - 1) {
         const nextChapter = chapters[currentIndex + 1];
-        window.location.href = `/doraemon/chapter/${nextChapter.number}`;
+        navigate(`/manga/${nextChapter.mangaId || window.location.pathname.split('/')[2]}/chapter/${nextChapter.number}`);
       }
     }
   };
@@ -191,7 +191,7 @@ const SimplePDFViewer = ({ pdfUrl, title, onClose, chapters, currentChapter }) =
                 {chapters && chapters.map((chapter) => (
                   <a
                     key={chapter._id}
-                    href={`/doraemon/chapter/${chapter.number}`}
+                    href={`/manga/${chapter.mangaId || window.location.pathname.split('/')[2]}/chapter/${chapter.number}`}
                     className={`block p-3 text-sm rounded-md ${currentChapter && currentChapter._id === chapter._id ? 'bg-blue-700 text-white' : 'hover:bg-gray-700'}`}
                   >
                     {chapter.title}

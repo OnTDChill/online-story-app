@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "TruyệnHD",
+  "name": "TruyệnHD - Đọc truyện online",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,9 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#0288D1",
+  "background_color": "#ffffff",
+  "description": "Ứng dụng đọc truyện tranh online với nhiều tính năng hấp dẫn",
+  "orientation": "portrait",
+  "categories": ["books", "entertainment", "comics"]
 }

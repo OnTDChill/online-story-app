@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Routes, Route } from 'react-router-dom';
 import { FaUsers, FaBook, FaChartLine, FaPlus, FaEdit, FaTrash, FaFileExport, FaSearch, FaFilter, FaListAlt, FaUndo, FaRedo, FaDownload, FaHome, FaFileArchive } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -15,6 +15,7 @@ import StoryPlotManagement from './StoryPlotManagement';
 import RevenueReports from './RevenueReports';
 import ExportDataComponent from './ExportDataComponent';
 import CBZImporter from './CBZImporter';
+import AdminCBZImport from './AdminCBZImport';
 
 /**
  * AdminDashboard - Trang quản trị cho admin
@@ -52,11 +53,16 @@ const historyReducer = (state, action) => {
   }
 };
 
-const AdminDashboard = () => {
+/**
+ * AdminDashboard - Trang quản trị cho admin
+ * @param {Object} props
+ * @param {string} props.activeTab - Tab mặc định khi mở dashboard
+ */
+const AdminDashboard = ({ activeTab: initialTab }) => {
   // State cho undo/redo
   const [tabHistory, dispatch] = useReducer(historyReducer, {
     past: [],
-    present: 'home',
+    present: initialTab || 'home',
     future: []
   });
 
@@ -158,7 +164,7 @@ const AdminDashboard = () => {
         case 'export':
           return <ExportDataComponent onActionSuccess={handleActionSuccess} />;
         case 'import-cbz':
-          return <CBZImporter onImportComplete={handleActionSuccess} />;
+          return <AdminCBZImport />;
         default:
           return <AdminDashboardHome />;
       }

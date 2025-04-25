@@ -72,6 +72,10 @@ const Header = ({ user, setUser }) => {
           <MenuItem onClick={() => handleListOption('original')}>Truyện Sáng Tác</MenuItem>
           <MenuItem onClick={() => handleListOption('translated')}>Truyện Dịch/Edit</MenuItem>
           <MenuItem onClick={() => {
+            navigate('/manga');
+            handleListClose();
+          }}>Danh Sách Manga</MenuItem>
+          <MenuItem onClick={() => {
             navigate('/grid');
             handleListClose();
           }}>Bảng Xếp Hạng Mới</MenuItem>

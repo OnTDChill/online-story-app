@@ -81,7 +81,7 @@ const MainLayout = ({ children, setUser }) => {
     // Cập nhật trạng thái
     setIsLoggedIn(false);
     setIsAdmin(false);
-    
+
     // Cập nhật trạng thái user trong AppNew.js
     if (setUser) {
       setUser(null);
@@ -89,7 +89,7 @@ const MainLayout = ({ children, setUser }) => {
 
     // Kích hoạt sự kiện để cập nhật trạng thái đăng nhập
     window.dispatchEvent(new Event('loginStatusChange'));
-    
+
     // Chuyển hướng về trang chủ
     window.location.href = '/';
   };
@@ -127,14 +127,26 @@ const MainLayout = ({ children, setUser }) => {
             {/* Search Bar */}
             <div className="hidden md:flex items-center flex-1 max-w-xl mx-4">
               <div className="relative w-full">
-                <input
-                  type="text"
-                  placeholder="Tìm kiếm truyện, tác giả..."
-                  className="w-full py-2 pl-4 pr-10 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-                <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-600">
-                  <FaSearch />
-                </button>
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  const searchValue = e.target.elements.search.value;
+                  if (searchValue.trim()) {
+                    navigate(`/advanced-filter?search=${encodeURIComponent(searchValue)}`);
+                  }
+                }}>
+                  <input
+                    name="search"
+                    type="text"
+                    placeholder="Tìm kiếm truyện, tác giả..."
+                    className="w-full py-2 pl-4 pr-10 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                  <button
+                    type="submit"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-600"
+                  >
+                    <FaSearch />
+                  </button>
+                </form>
               </div>
             </div>
 
@@ -238,14 +250,27 @@ const MainLayout = ({ children, setUser }) => {
         <div className={`md:hidden ${showMobileMenu ? 'block' : 'hidden'}`}>
           <div className="p-4 border-t border-blue-500">
             <div className="relative mb-4">
-              <input
-                type="text"
-                placeholder="Tìm kiếm truyện, tác giả..."
-                className="w-full py-2 pl-4 pr-10 rounded-full text-gray-800 focus:outline-none"
-              />
-              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                <FaSearch />
-              </button>
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                const searchValue = e.target.elements.search.value;
+                if (searchValue.trim()) {
+                  navigate(`/advanced-filter?search=${encodeURIComponent(searchValue)}`);
+                  setShowMobileMenu(false);
+                }
+              }}>
+                <input
+                  name="search"
+                  type="text"
+                  placeholder="Tìm kiếm truyện, tác giả..."
+                  className="w-full py-2 pl-4 pr-10 rounded-full text-gray-800 focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                >
+                  <FaSearch />
+                </button>
+              </form>
             </div>
 
             <ul className="space-y-2">
@@ -278,7 +303,47 @@ const MainLayout = ({ children, setUser }) => {
             <div className="bg-white bg-opacity-10 rounded-lg p-4 h-72 overflow-y-auto scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-red-300">
               <div className="space-y-4">
                 <div className="flex items-start space-x-3 pb-3 border-b border-white border-opacity-20">
-                  <Link to="/doraemon">
+                  <Link to="/manga/one-piece">
+                    <img
+                      src="/data/manga/one-piece/cover.jpg"
+                      alt="One Piece"
+                      className="w-16 h-20 object-cover rounded-md shadow-md"
+                    />
+                  </Link>
+                  <div>
+                    <Link to="/manga/one-piece">
+                      <h4 className="font-bold text-sm hover:text-blue-300">One Piece</h4>
+                    </Link>
+                    <p className="text-xs text-white text-opacity-80 mt-1">Thể loại: Phiêu lưu, Hành động</p>
+                    <div className="flex items-center mt-1">
+                      <span className="text-xs bg-red-600 px-2 py-0.5 rounded-full">HOT</span>
+                      <span className="text-xs ml-2">⭐ 4.9</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3 pb-3 border-b border-white border-opacity-20">
+                  <Link to="/manga/naruto">
+                    <img
+                      src="/data/manga/naruto/cover.jpg"
+                      alt="Naruto"
+                      className="w-16 h-20 object-cover rounded-md shadow-md"
+                    />
+                  </Link>
+                  <div>
+                    <Link to="/manga/naruto">
+                      <h4 className="font-bold text-sm hover:text-blue-300">Naruto</h4>
+                    </Link>
+                    <p className="text-xs text-white text-opacity-80 mt-1">Thể loại: Hành động, Võ thuật</p>
+                    <div className="flex items-center mt-1">
+                      <span className="text-xs bg-red-600 px-2 py-0.5 rounded-full">HOT</span>
+                      <span className="text-xs ml-2">⭐ 4.4</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3 pb-3 border-b border-white border-opacity-20">
+                  <Link to="/manga/doraemon">
                     <img
                       src="/data/manga/doraemon/cover.jpg"
                       alt="Doraemon"
@@ -286,7 +351,7 @@ const MainLayout = ({ children, setUser }) => {
                     />
                   </Link>
                   <div>
-                    <Link to="/doraemon">
+                    <Link to="/manga/doraemon">
                       <h4 className="font-bold text-sm hover:text-blue-300">Doraemon</h4>
                     </Link>
                     <p className="text-xs text-white text-opacity-80 mt-1">Thể loại: Hài hước, Phiêu lưu</p>
@@ -296,28 +361,30 @@ const MainLayout = ({ children, setUser }) => {
                     </div>
                   </div>
                 </div>
-                
-                {[2, 3, 4, 5].map((item) => (
-                  <div key={item} className="flex items-start space-x-3 pb-3 border-b border-white border-opacity-20">
+
+                <div className="flex items-start space-x-3 pb-3 border-b border-white border-opacity-20">
+                  <Link to="/manga/cưa_thủ">
                     <img
-                      src={`https://picsum.photos/200/300?random=${item}`}
-                      alt="Manga cover"
+                      src="/data/manga/cưa_thủ/cover.png"
+                      alt="Cưa Thủ"
                       className="w-16 h-20 object-cover rounded-md shadow-md"
                     />
-                    <div>
-                      <h4 className="font-bold text-sm">Truyện hot #{item}</h4>
-                      <p className="text-xs text-white text-opacity-80 mt-1">Thể loại: Hành động, Phiêu lưu</p>
-                      <div className="flex items-center mt-1">
-                        <span className="text-xs bg-red-600 px-2 py-0.5 rounded-full">HOT</span>
-                        <span className="text-xs ml-2">⭐ 4.9</span>
-                      </div>
+                  </Link>
+                  <div>
+                    <Link to="/manga/cưa_thủ">
+                      <h4 className="font-bold text-sm hover:text-blue-300">Cưa Thủ</h4>
+                    </Link>
+                    <p className="text-xs text-white text-opacity-80 mt-1">Thể loại: Hành động, Kinh dị</p>
+                    <div className="flex items-center mt-1">
+                      <span className="text-xs bg-red-600 px-2 py-0.5 rounded-full">HOT</span>
+                      <span className="text-xs ml-2">⭐ 4.8</span>
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
             </div>
             <div className="text-center mt-2">
-              <Link to="/hot-stories" className="inline-block bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-sm font-medium py-2 px-4 rounded-full transition duration-300">
+              <Link to="/rankings" className="inline-block bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-sm font-medium py-2 px-4 rounded-full transition duration-300">
                 Xem thêm
               </Link>
             </div>

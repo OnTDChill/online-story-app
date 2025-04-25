@@ -1,0 +1,23 @@
+{
+  "_id": "cưa_thủ",
+  "title": "Cưa Thủ",
+  "author": "Tatsuki Fujimoto",
+  "artist": "Tatsuki Fujimoto",
+  "description": "Cưa Thủ kể về Denji, một thanh niên nghèo đang cố trả nợ bằng cách săn quỷ với con quỷ cưa máy của mình. Sau khi bị phản bội và giết chết, anh hợp nhất với con quỷ cưa máy để trở thành Chainsaw Man.",
+  "genre": "Hành động",
+  "genres": [
+    "Hành động",
+    "Kinh dị",
+    "Siêu nhiên",
+    "Phiêu lưu"
+  ],
+  "status": "Đang tiến hành",
+  "thumbnail": "/data/manga/cưa_thủ/cover.png",
+  "type": "Manga",
+  "releaseYear": 2018,
+  "chapters": 97,
+  "views": 8500,
+  "rating": 4.8,
+  "createdAt": "2023-04-25T00:05:51.081369",
+  "updatedAt": "2024-05-15T00:05:51.081369"
+}

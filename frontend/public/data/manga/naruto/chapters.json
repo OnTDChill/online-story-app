@@ -1,8 +1,9 @@
 [
   {
     "_id": "naruto-chapter-1",
+    "id": "1",
     "number": 1,
-    "title": "Chapter 1",
+    "title": "Uzumaki Naruto",
     "images": [
       "/data/manga/naruto/chapters/1/001.jpg",
       "/data/manga/naruto/chapters/1/002.jpg",
@@ -12,12 +13,15 @@
     ],
     "views": 45605,
     "createdAt": "2024-04-30T14:42:01.459560",
+    "date": "2024-04-30T14:42:01.459560",
+    "mangaId": "naruto",
     "isLocked": false
   },
   {
     "_id": "naruto-chapter-2",
+    "id": "2",
     "number": 2,
-    "title": "Chapter 2",
+    "title": "Konohamaru",
     "images": [
       "/data/manga/naruto/chapters/2/001.jpg",
       "/data/manga/naruto/chapters/2/002.jpg",
@@ -35,6 +39,8 @@
     ],
     "views": 23608,
     "createdAt": "2024-05-07T14:42:21.625078",
+    "date": "2024-05-07T14:42:21.625078",
+    "mangaId": "naruto",
     "isLocked": false
   },
   {

@@ -21,7 +21,7 @@ const StoryDetail = () => {
   const [hoverRating, setHoverRating] = useState(0);
   const [commentText, setCommentText] = useState('');
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/';
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api/';
 
   // Lấy dữ liệu truyện
   useEffect(() => {
@@ -277,28 +277,28 @@ const StoryDetail = () => {
                   <FaEye className="mr-2" />
                   Lượt xem
                 </span>
-                <span className="font-semibold">{story.views.toLocaleString()}</span>
+                <span className="font-semibold">{story.views ? story.views.toLocaleString() : '0'}</span>
               </div>
               <div className="flex justify-between items-center mb-2">
                 <span className="flex items-center text-gray-700">
                   <FaHeart className="mr-2 text-red-500" />
                   Lượt thích
                 </span>
-                <span className="font-semibold">{story.likes.toLocaleString()}</span>
+                <span className="font-semibold">{story.likes ? story.likes.toLocaleString() : '0'}</span>
               </div>
               <div className="flex justify-between items-center mb-2">
                 <span className="flex items-center text-gray-700">
                   <FaStar className="mr-2 text-yellow-500" />
                   Đánh giá
                 </span>
-                <span className="font-semibold">{story.rating}/5</span>
+                <span className="font-semibold">{story.rating || '0'}/5</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="flex items-center text-gray-700">
                   <FaList className="mr-2" />
                   Số chương
                 </span>
-                <span className="font-semibold">{story.chapters}</span>
+                <span className="font-semibold">{story.chapters || '1'}</span>
               </div>
             </div>
 
@@ -408,7 +408,7 @@ const StoryDetail = () => {
                   <p className="text-gray-700 mb-6 whitespace-pre-line">{story.description}</p>
 
                   {/* Tags */}
-                  {story.tags && story.tags.length > 0 && (
+                  {story.tags && Array.isArray(story.tags) && story.tags.length > 0 && (
                     <div className="mb-6">
                       <h3 className="font-semibold mb-2">Thẻ</h3>
                       <div className="flex flex-wrap gap-2">
@@ -461,7 +461,7 @@ const StoryDetail = () => {
                   </div>
 
                   {/* Related Stories */}
-                  {story.relatedStories && story.relatedStories.length > 0 && (
+                  {story.relatedStories && Array.isArray(story.relatedStories) && story.relatedStories.length > 0 && (
                     <div>
                       <h3 className="font-semibold mb-3">Truyện liên quan</h3>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
